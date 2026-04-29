@@ -1,0 +1,56 @@
+﻿@model List<JobPortalApp.Models.Job>
+@{
+    ViewData["Title"] = "Tất cả tin tuyển dụng";
+}
+
+<div class="container py-5">
+    <h2 class="fw-bold mb-4">Tất cả tin tuyển dụng (@Model.Count)</h2>
+
+    <div class="row g-4">
+        @foreach (var job in Model)
+        {
+            <div class="col-lg-4 col-md-6">
+                <div class="card job-card h-100 border-0 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">@job.Title</h5>
+                        <p class="text-muted mb-2">@job.Employer?.FullName</p>
+
+                        <div class="d-flex justify-content-between mb-3">
+                            <span class="badge badge-salary px-3 py-2 rounded-pill">
+                                @if (job.SalaryFrom.HasValue && job.SalaryTo.HasValue)
+                                {
+                                    @($"{job.SalaryFrom.Value:0,0} - {job.SalaryTo.Value:0,0} VNĐ")
+                                }
+                                else
+                                {
+
+                                    <text>Thương lượng</text>
+                                }
+                            </span>
+                            <span class="text-muted small">@job.Location</span>
+                        </div>
+
+                        <p class="text-truncate" style="max-height: 4.5em;">@job.Description</p>
+                    </div>
+                    <div class="card-footer bg-white border-0">
+                        <a asp-action="Details" asp-route-id="@job.Id" class="btn btn-primary w-100 rounded-pill">
+                            Xem chi tiết & Nộp đơn
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <!-- Phân trang -->
+    <nav class="mt-5">
+        <ul class="pagination justify-content-center">
+            @for (int i = 1; i <= (int)ViewBag.TotalPages; i++)
+            {
+                <li class="page-item @(i == (int)ViewBag.CurrentPage ? "active" : "")">
+                    <a class="page-link" asp-action="Index" asp-route-page="@i">@i</a>
+                </li>
+            }
+        </ul>
+    </nav>
+</div>

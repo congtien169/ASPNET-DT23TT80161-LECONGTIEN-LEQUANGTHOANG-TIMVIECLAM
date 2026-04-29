@@ -1,0 +1,116 @@
+﻿@model HomeIndexViewModel
+@{
+    ViewData["Title"] = "JobPortal - Tìm việc làm mơ ước";
+}
+
+<!-- HERO SECTION -->
+<section class="hero py-5">
+    <div class="container hero-content">
+        <div class="row align-items-center">
+            <div class="col-lg-7">
+                <h1 class="display-3 fw-bold mb-3 text-white">
+                    Tìm việc làm mơ ước<br>của bạn ngay hôm nay
+                </h1>
+                <p class="lead text-white mb-4">
+                    Hàng ngàn cơ hội việc làm chất lượng từ các công ty hàng đầu tại Việt Nam.
+                </p>
+                @if (!User.Identity?.IsAuthenticated == true)
+                {
+                    <div>
+                        <a asp-controller="Account" asp-action="Register" class="btn btn-light btn-lg px-5 me-3">Đăng ký ngay</a>
+                        <a asp-controller="Account" asp-action="Login" class="btn btn-outline-light btn-lg px-5">Đăng nhập</a>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container py-5">
+
+    <!-- CV MỚI NHẤT -->
+    <section class="mb-5">
+        <div class="d-flex justify-content-between align-items-end mb-4">
+            <h2 class="fw-bold">Ứng viên mới nhất</h2>
+            <a asp-controller="Seeker" asp-action="Index" class="text-primary fw-semibold">Xem tất cả CV →</a>
+        </div>
+
+        <div class="row g-4">
+            @foreach (var cv in Model.LatestCVs)
+            {
+                <div class="col-lg-2 col-md-4 col-6">
+                    <div class="card job-card h-100 border-0 shadow-sm text-center p-3">
+                        <div class="mx-auto mb-3">
+                            @if (!string.IsNullOrEmpty(cv.AvatarUrl))
+                            {
+                                <img src="@cv.AvatarUrl" alt="@cv.FullName" class="rounded-circle" width="80" height="80" style="object-fit:cover;">
+                            }
+                            else
+                            {
+                                <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center mx-auto" style="width:80px;height:80px;font-size:2rem;">
+                                    @cv.FullName?.Substring(0, 1).ToUpper()
+                                </div>
+                            }
+                        </div>
+                        <h5 class="mb-1">@cv.FullName</h5>
+                        <p class="text-muted small mb-3">@cv.Phone</p>
+                        <a href="#" class="btn btn-outline-primary btn-sm w-100">Xem hồ sơ</a>
+                    </div>
+                </div>
+            }
+        </div>
+    </section>
+
+    <!-- TIN TUYỂN DỤNG MỚI NHẤT -->
+    <section>
+        <div class="d-flex justify-content-between align-items-end mb-4">
+            <h2 class="fw-bold">Tin tuyển dụng mới nhất</h2>
+            <a asp-controller="Job" asp-action="Search" class="text-primary fw-semibold">Xem tất cả việc làm →</a>
+        </div>
+
+        <div class="row g-4">
+            @foreach (var job in Model.LatestJobs)
+            {
+                <div class="col-lg-4 col-md-6">
+                    <div class="card job-card h-100 border-0 shadow-sm">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <h5 class="card-title mb-2">@job.Title</h5>
+                                    <p class="text-muted mb-2">@job.Employer?.FullName</p>
+                                </div>
+                                <span class="badge badge-salary px-3 py-2 rounded-pill">
+                                    @if (job.SalaryFrom.HasValue && job.SalaryTo.HasValue)
+                                    {
+                                        @($"{job.SalaryFrom.Value:0,0} - {job.SalaryTo.Value:0,0}")
+                                    }
+                                    else
+                                    {
+                                        <text>Thương lượng</text>
+                                    }
+                                </span>
+                            </div>
+
+                            <p class="text-muted small mb-3">
+                                <i class="fas fa-map-marker-alt"></i> @job.Location
+                                <span class="mx-2">•</span>
+                                <i class="fas fa-briefcase"></i> @job.Experience năm
+                            </p>
+
+                            <p class="card-text text-truncate" style="max-height: 4.5em;">@job.Description</p>
+
+                            <div class="mt-3">
+                                <span class="badge bg-light text-dark me-1">@job.Category?.Name</span>
+                                <span class="badge bg-light text-dark">@job.JobType</span>
+                            </div>
+                        </div>
+                        <div class="card-footer bg-white border-0 pt-0">
+                            <a asp-controller="Job" asp-action="Details" asp-route-id="@job.Id"
+                               class="btn btn-primary w-100 rounded-pill">Xem chi tiết & Nộp đơn</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </section>
+</div>

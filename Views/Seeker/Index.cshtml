@@ -1,0 +1,45 @@
+﻿@model List<JobPortalApp.Models.User>
+@{
+    ViewData["Title"] = "Tất cả hồ sơ CV";
+}
+
+<div class="container py-5">
+    <h2 class="fw-bold mb-4">Tất cả hồ sơ ứng viên (@Model.Count)</h2>
+
+    <div class="row g-4">
+        @foreach (var cv in Model)
+        {
+            <div class="col-lg-3 col-md-4 col-6">
+                <div class="card job-card h-100 border-0 shadow-sm text-center p-4">
+                    <div class="mx-auto mb-3">
+                        @if (!string.IsNullOrEmpty(cv.AvatarUrl))
+                        {
+                            <img src="@cv.AvatarUrl" alt="@cv.FullName" class="rounded-circle" width="90" height="90" style="object-fit:cover;">
+                        }
+                        else
+                        {
+                            <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center mx-auto" style="width:90px;height:90px;font-size:2.2rem;">
+                                @cv.FullName?.Substring(0, 1).ToUpper()
+                            </div>
+                        }
+                    </div>
+                    <h5 class="mb-2">@cv.FullName</h5>
+                    <p class="text-muted small">@cv.Phone</p>
+                    <a href="#" class="btn btn-outline-primary btn-sm w-100 mt-3">Xem chi tiết hồ sơ</a>
+                </div>
+            </div>
+        }
+    </div>
+
+    <!-- Phân trang -->
+    <nav class="mt-5">
+        <ul class="pagination justify-content-center">
+            @for (int i = 1; i <= (int)ViewBag.TotalPages; i++)
+            {
+                <li class="page-item @(i == (int)ViewBag.CurrentPage ? "active" : "")">
+                    <a class="page-link" asp-action="Index" asp-route-page="@i">@i</a>
+                </li>
+            }
+        </ul>
+    </nav>
+</div>

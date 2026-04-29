@@ -1,0 +1,32 @@
+﻿@model List<JobPortalApp.Models.JobApplication>
+@{
+    ViewData["Title"] = "Danh sách ứng viên";
+}
+
+<div class="container py-4">
+    <h2>Danh sách ứng viên cho tin: @Model.FirstOrDefault()?.Job?.Title</h2>
+
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Họ tên</th>
+                <th>Ngày nộp</th>
+                <th>Trạng thái</th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var app in Model)
+            {
+                <tr>
+                    <td>@app.Seeker?.FullName</td>
+                    <td>@app.AppliedDate.ToString("dd/MM/yyyy HH:mm")</td>
+                    <td><span class="badge bg-warning">@app.Status</span></td>
+                    <td>
+                        <a asp-action="ViewApplication" asp-route-id="@app.Id" class="btn btn-info btn-sm">Xem hồ sơ</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

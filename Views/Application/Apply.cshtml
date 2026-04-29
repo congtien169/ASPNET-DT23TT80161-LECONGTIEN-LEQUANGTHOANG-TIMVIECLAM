@@ -1,0 +1,35 @@
+﻿@model JobPortalApp.Models.JobApplication
+@{
+    ViewData["Title"] = "Nộp đơn ứng tuyển";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow">
+                <div class="card-header bg-success text-white">
+                    <h3>Nộp đơn ứng tuyển: @Model.Job?.Title</h3>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Apply" method="post" enctype="multipart/form-data">
+                        <input type="hidden" asp-for="JobId" />
+
+                        <div class="mb-3">
+                            <label class="form-label">Thư xin việc (Cover Letter)</label>
+                            <textarea asp-for="CoverLetter" class="form-control" rows="6" placeholder="Giới thiệu ngắn gọn về bản thân và lý do ứng tuyển..."></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Tải CV (PDF) - Nếu khác CV profile</label>
+                            <input type="file" name="cvFile" class="form-control" accept=".pdf" />
+                        </div>
+
+                        <button type="submit" class="btn btn-success btn-lg w-100">
+                            <i class="fas fa-paper-plane"></i> Nộp đơn ngay
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

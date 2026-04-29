@@ -1,0 +1,20 @@
+﻿@model JobPortalApp.Models.JobApplication
+
+<div class="container py-5">
+    <h2>Hồ sơ ứng viên: @Model.Seeker?.FullName</h2>
+    
+    <div class="row">
+        <div class="col-md-8">
+            <p><strong>Thư xin việc:</strong></p>
+            <p>@Model.CoverLetter</p>
+            
+            <p>
+                <strong>CV:</strong>
+                @if (!string.IsNullOrEmpty(Model.CVUrl))
+                {
+                    <a href="@Model.CVUrl" target="_blank" class="btn btn-primary">Tải CV PDF</a>
+                }
+            </p>
+        </div>
+    </div>
+</div>

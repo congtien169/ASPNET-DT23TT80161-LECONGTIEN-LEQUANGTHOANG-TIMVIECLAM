@@ -1,0 +1,79 @@
+﻿@model List<JobPortalApp.Models.Job>
+@{
+    ViewData["Title"] = "Quản lý Tin Tuyển dụng";
+}
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Quản lý Tin Tuyển dụng của tôi</h2>
+        <a asp-action="Create" class="btn btn-primary btn-lg">+ Đăng tin mới</a>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+
+    <table class="table table-bordered table-hover align-middle">
+        <thead class="table-dark">
+            <tr>
+                <th>Tiêu đề tin</th>
+                <th>Lương</th>
+                <th>Địa điểm</th>
+                <th>Ngày đăng</th>
+                <th>Số đơn ứng tuyển</th>
+                <th>Trạng thái</th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var job in Model)
+            {
+                <tr>
+                    <td><strong>@job.Title</strong></td>
+                    <td>
+                        @if (job.SalaryFrom.HasValue && job.SalaryTo.HasValue)
+                        {
+                            <span class="text-success">@job.SalaryFrom.Value.ToString("0,0") - @job.SalaryTo.Value.ToString("0,0")</span>
+                        }
+                        else
+                        {
+
+                            <span>Thương lượng</span>
+                        }
+                    </td>
+                    <td>@job.Location</td>
+                    <td>@job.PostedDate.ToString("dd/MM/yyyy")</td>
+                    <td>
+                        <span class="badge bg-info fs-6">@job.Applications?.Count ?? 0 đơn</span>
+                    </td>
+                    <td>
+                        <span class="badge @(job.IsActive ? "bg-success" : "bg-secondary")">
+                            @(job.IsActive ? "Đang hiển thị" : "Đã ẩn")
+                        </span>
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@job.Id" class="btn btn-warning btn-sm">Sửa</a>
+                        <form asp-action="ToggleActive" method="post" style="display:inline;">
+                            <input type="hidden" name="id" value="@job.Id" />
+                            <button type="submit" class="btn btn-sm @(job.IsActive ? "btn-secondary" : "btn-success")">
+                                @(job.IsActive ? "Ẩn" : "Hiện")
+                            </button>
+                        </form>
+                        <a asp-controller="Application" asp-action="MyApplications" asp-route-jobId="@job.Id"
+                               class="btn btn-info btn-sm">
+                            👥 Xem ứng viên (@(job.Applications?.Count ?? 0))
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    @if (Model.Count == 0)
+    {
+        <div class="alert alert-info text-center">
+            Bạn chưa có tin tuyển dụng nào. Hãy <a asp-action="Create">đăng tin ngay</a>.
+        </div>
+    }
+</div>

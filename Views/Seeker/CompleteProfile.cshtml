@@ -1,0 +1,49 @@
+﻿@model JobPortalApp.Models.User
+@{
+    ViewData["Title"] = "Hoàn thiện Hồ sơ CV";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h3>👤 Hoàn thiện Hồ sơ CV của bạn</h3>
+                </div>
+                <div class="card-body">
+                    @if (TempData["Success"] != null)
+                    {
+                        <div class="alert alert-success">@TempData["Success"]</div>
+                    }
+
+                    <form asp-action="CompleteProfile" method="post" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Họ và tên</label>
+                            <input asp-for="FullName" class="form-control" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Số điện thoại</label>
+                            <input asp-for="Phone" class="form-control" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Tải lên CV (PDF)</label>
+                            <input type="file" name="cvFile" class="form-control" accept=".pdf" />
+                            @if (!string.IsNullOrEmpty(Model.CVUrl))
+                            {
+                                <small class="text-success d-block mt-2">
+                                    CV hiện tại: <a href="@Model.CVUrl" target="_blank">Xem CV</a>
+                                </small>
+                            }
+                        </div>
+
+                        <button type="submit" class="btn btn-success btn-lg w-100">
+                            <i class="fas fa-save"></i> Lưu thông tin CV
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
