@@ -1,0 +1,29 @@
+# .NET
+bin/
+obj/
+*.user
+*.suo
+*.usersecrets
+appsettings.*.json
+
+# Database
+*.db
+*.sqlite
+
+# Logs
+logs/
+*.log
+
+# Visual Studio
+.vs/
+.vscode/
+
+# NuGet
+packages/
+*.nupkg
+
+# Upload files
+wwwroot/uploads/
+
+# Secret files
+secrets.json
